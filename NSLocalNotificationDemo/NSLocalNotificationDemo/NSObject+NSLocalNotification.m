@@ -16,43 +16,17 @@
 
 @implementation NSObject (NSLocalNotification)
 
-
-//        //创建一个本地通知
-//        UILocalNotification *notification = [[UILocalNotification alloc] init];
-//        //设置时区 跟随手机系统时区
-//        notification.timeZone = [NSTimeZone defaultTimeZone];
-//        //设置本地推送的时间
-//        notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
-//        //设置锁屏状态下  “滑动XXX”
-//        notification.hasAction =  YES;
-//        //设置锁屏状态下的文字
-//        notification.alertAction = @"锁屏状态文字";
-//        //设置启动图片
-//        notification.alertLaunchImage = @"1.jpg";
-//        //设置音效
-//        notification.soundName =  UILocalNotificationDefaultSoundName;
-//        //设置应用图标 提醒数字
-//        notification.applicationIconBadgeNumber = 1;
-//        //设置弹出的内容
-//        notification.alertBody = @"本地通知练习";
-//        //设置userInfo 传递消息
-//        notification.userInfo = @{@"alertBody":notification.alertBody,@"applicationIconBadgeNumber":@(notification.applicationIconBadgeNumber)};
-//
-
-
-
-
 /**
- *   注册通知
+ *   注册通知  
  */
-+ (void)registerLocalNotification:(NSInteger)alertTime string:(NSString *)string key:(NSString *)key
++ (void)registerLocalNotification:(NSInteger)time content:(NSString *)content key:(NSString *)key;
 {
         //创建一个本地通知
     UILocalNotification *notification = [[UILocalNotification alloc] init];
 
     // 设置触发通知的时间
     //需要使用时间戳
-    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:alertTime];
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:time];
   
     notification.fireDate = fireDate;
     // 时区
@@ -60,15 +34,16 @@
     // 设置重复的间隔
     notification.repeatInterval = 0;//0表示不重复
     // 通知内容
-    notification.alertBody =  string;
+    notification.alertBody =  content;
     //应用程序右上角 角标
     notification.applicationIconBadgeNumber = 1;
     // 通知被触发时播放的声音
     notification.soundName = UILocalNotificationDefaultSoundName;
     // 通知参数
-    NSDictionary *userDict = [NSDictionary dictionaryWithObject:string forKey:key];
+    NSDictionary *userDict = [NSDictionary dictionaryWithObject:content forKey:key];
     
     notification.userInfo = userDict;
+    
     //选择使用 哪个操作组
 //    notification.category = @"select";
     
@@ -87,10 +62,12 @@
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
     }
     
+#warning 注册完之后如果不删除，下次会继续存在，即使从模拟器卸载掉也会保留
+    
     //删除之前的通知
     [[UIApplication sharedApplication]cancelAllLocalNotifications];
     
-#warning 注册完之后如果不删除，下次会继续存在，即使从模拟器卸载掉也会保留
+
     // 执行通知注册
     [[UIApplication sharedApplication] scheduleLocalNotification:notification];
 
@@ -106,22 +83,22 @@
     
     if (localNotifications) {
         
-    
-    for (UILocalNotification *notification in localNotifications) {
-        NSDictionary *userInfo = notification.userInfo;
-        if (userInfo) {
-            // 根据设置通知参数时指定的key来获取通知参数
-            NSString *info = userInfo[key];
-            
-            // 如果找到需要取消的通知，则取消
-            if ([info isEqualToString:key]) {
-                if (notification) {
-                       [[UIApplication sharedApplication] cancelLocalNotification:notification];
+        
+        for (UILocalNotification *notification in localNotifications) {
+            NSDictionary *userInfo = notification.userInfo;
+            if (userInfo) {
+                // 根据设置通知参数时指定的key来获取通知参数
+                NSString *info = userInfo[key];
+                
+                // 如果找到需要取消的通知，则取消
+                if ([info isEqualToString:key]) {
+                    if (notification) {
+                        [[UIApplication sharedApplication] cancelLocalNotification:notification];
+                    }
+                    break;
                 }
-                break;
             }
         }
-    }
         
     }
 }
@@ -194,6 +171,29 @@
     }
     
 }
+
+
+//        //创建一个本地通知
+//        UILocalNotification *notification = [[UILocalNotification alloc] init];
+//        //设置时区 跟随手机系统时区
+//        notification.timeZone = [NSTimeZone defaultTimeZone];
+//        //设置本地推送的时间
+//        notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:1];
+//        //设置锁屏状态下  “滑动XXX”
+//        notification.hasAction =  YES;
+//        //设置锁屏状态下的文字
+//        notification.alertAction = @"锁屏状态文字";
+//        //设置启动图片
+//        notification.alertLaunchImage = @"1.jpg";
+//        //设置音效
+//        notification.soundName =  UILocalNotificationDefaultSoundName;
+//        //设置应用图标 提醒数字
+//        notification.applicationIconBadgeNumber = 1;
+//        //设置弹出的内容
+//        notification.alertBody = @"本地通知练习";
+//        //设置userInfo 传递消息
+//        notification.userInfo = @{@"alertBody":notification.alertBody,@"applicationIconBadgeNumber":@(notification.applicationIconBadgeNumber)};
+//
 
 
 

@@ -38,7 +38,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [AppDelegate registerLocalNotification:10 string:@"本地推送练习" key:LOCALNOTIFICATION_KEY];
+    [AppDelegate registerLocalNotification:10 content:@"本地推送练习" key:LOCALNOTIFICATION_KEY];
     
     NSLog(@"launchOptions: %@", launchOptions);
     
@@ -47,13 +47,6 @@
 
 
 
-
-
-// 进入前台时会调用该方法
-- (void)applicationDidBecomeActive:(UIApplication *)application;
-{
-    NSLog(@"我进入前台了");
-}
 
 
 /**
